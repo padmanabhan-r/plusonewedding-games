@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PlusOne Wedding · Wedding Feast</title>
+<meta name="description" content="Wedding Feast: serve guests at a South Indian wedding dining hall. Rush to the counter, pick up the right dish, deliver before the guests get hangry!">
+<meta name="theme-color" content="#1a0e22">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://plusonewedding.site/game_2_dinning/">
+<meta property="og:title" content="PlusOne Wedding · Wedding Feast">
+<meta property="og:description" content="Serve guests at a South Indian wedding. Pick up dishes, deliver fast, keep the happiness up.">
+<meta property="og:image" content="https://plusonewedding.site/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://plusonewedding.site/og.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/game_2_dinning/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <h1>Wedding Feast</h1>
+    <div class="tools">
+      <a class="tool" href="/">Maze game</a>
+      <button class="tool" id="how" type="button"><span class="long">How to play</span><span class="short">Rules</span></button>
+      <button class="tool" id="lb" type="button"><span class="long">Leaderboard</span><span class="short">Scores</span></button>
+      <button class="tool" id="restart" type="button" aria-label="Restart"><span class="long">Restart</span><span class="short" aria-hidden="true">↺</span></button>
+      <button class="tool" id="mute" type="button" aria-pressed="false" aria-label="Sound"><span class="long" id="mute-long">Sound on</span><span class="short" id="mute-short" aria-hidden="true">♪</span></button>
+    </div>
+  </header>
+
+  <div class="hud" aria-live="polite">
+    <div class="hud-cell"><span class="lbl">Score</span><b id="score">0</b></div>
+    <div class="hud-cell"><span class="lbl">Served</span><b id="served">0</b></div>
+    <div class="hud-cell"><span class="lbl">Happiness</span><b id="happy" class="days">100%</b></div>
+    <div class="hud-cell"><span class="lbl" id="round-lbl">Round 1</span><b id="round">Breakfast</b></div>
+  </div>
+
+  <main class="board">
+    <div class="stage" id="stage">
+      <canvas id="screen" width="336" height="336" aria-label="Wedding dining hall"></canvas>
+      <div class="toast" id="toast" role="status"></div>
+      <div class="bubble" id="bubble"></div>
+
+      <div class="overlay" id="ov-ready">
+        <div class="ready"><span id="ready-round"></span><b id="ready-txt">Ready?</b></div>
+      </div>
+
+      <div class="overlay" id="ov-pause">
+        <div class="card">
+          <h2>Paused</h2>
+          <p class="lede">The guests are waiting. They're getting hungry.</p>
+          <button class="btn primary" id="resume">Resume</button>
+        </div>
+      </div>
+
+      <div class="overlay" id="ov-clear">
+        <div class="card">
+          <p class="eyebrow" id="clear-eyebrow">Round 1 done</p>
+          <h2 id="clear-title">Breakfast, <span class="hi">done!</span></h2>
+          <dl class="bonus" id="clear-bonus"></dl>
+          <button class="btn primary" id="next">Next round</button>
+        </div>
+      </div>
+
+      <div class="overlay" id="ov-over">
+        <div class="card">
+          <p class="eyebrow">Feast over</p>
+          <h2 id="over-title">Wedding feast, <span class="hi">done!</span></h2>
+          <p class="score-line">Score <b id="over-score">0</b> <span class="dot">·</span> Best <b id="over-best">0</b></p>
+          <form class="save" data-save id="save-over">
+            <label for="save-over-name">Put your name on the leaderboard</label>
+            <div class="field">
+              <input id="save-over-name" name="name" maxlength="16" autocomplete="nickname" placeholder="Your name" required>
+              <button class="btn primary" type="submit">Save</button>
+            </div>
+            <p class="msg" aria-live="polite"></p>
+          </form>
+          <div class="saved" id="save-over-done" hidden><p></p><button class="btn" type="button" data-open-lb>See the leaderboard</button></div>
+          <div class="row">
+            <button class="btn primary" id="again">Play again</button>
+            <button class="btn" id="share">Beat my score</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="pad" id="pad" aria-label="Direction pad">
+    <button data-dir="0" aria-label="Up">▲</button>
+    <button data-dir="3" aria-label="Left">◀</button>
+    <button data-dir="1" aria-label="Right">▶</button>
+    <button data-dir="2" aria-label="Down">▼</button>
+  </div>
+</div>
+
+<div class="rules show" id="rules" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+  <div class="rules-card">
+    <h2 id="rules-title">Wedding Feast</h2>
+    <p class="what">The nalangu is done, now it's time for the feast! You're the server (panjaayat waiter) at a South Indian wedding. Guests will shout for food — run to the kitchen counter, grab the right dish, and deliver it before they turn hangry.</p>
+
+    <h3>How to play</h3>
+    <ol class="steps">
+      <li><span class="step-icon">🍽</span><span><b>Watch the tables.</b> A food icon floats above any table that has an order. The bar below it shows time remaining.</span></li>
+      <li><span class="step-icon">🍛</span><span><b>Go to the counter</b> (the top row). Walk to the column with the dish you need — you'll pick it up automatically.</span></li>
+      <li><span class="step-icon">🏃</span><span><b>Rush to the table.</b> Get close and the dish is delivered automatically if it's the right one.</span></li>
+      <li><span class="step-icon">😤</span><span><b>Don't be late!</b> Expired orders make guests angry — they fight their relatives and the wedding happiness drops.</span></li>
+    </ol>
+
+    <h3>Three rounds</h3>
+    <ul class="cast">
+      <li><span class="step-icon ci">Br</span><span><b>Breakfast</b> — Idli, Dosa, Pongal, Vada, Coffee. 4 tables, generous time.</span></li>
+      <li><span class="step-icon ci">Lu</span><span><b>Lunch</b> — Rice, Sambar, Rasam, Kootu, Payasam. 6 tables, medium pace.</span></li>
+      <li><span class="step-icon ci">Di</span><span><b>Dinner</b> — Biryani, Parotta, Kurma, Kothu, Jigarthanda. 9 tables, fast orders.</span></li>
+    </ul>
+
+    <p class="controls"><span class="kbd-only">Arrow keys or WASD to move. P to pause, R to restart.</span><span class="touch-only">Swipe on the hall or use the pad below.</span></p>
+    <p class="beat" id="beat" hidden></p>
+    <button class="btn primary big" id="play" type="button">Start serving!</button>
+  </div>
+</div>
+
+<div class="rules" id="lbm" role="dialog" aria-modal="true" aria-labelledby="lbm-title">
+  <div class="rules-card board-card">
+    <h2 id="lbm-title">Leaderboard</h2>
+    <p class="what">The best wedding feasts so far. Finish a game to add your name.</p>
+    <ol class="lb-list" id="lb-list"></ol>
+    <p class="lb-status" id="lb-status"></p>
+    <button class="btn primary big" id="lb-close" type="button">Back to the feast</button>
+  </div>
+</div>
+
+<script src="/game_2_dinning/game.js"></script>
+</body>
+</html>
