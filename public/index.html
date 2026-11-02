@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PlusOne Wedding · the wedding-chaos maze game</title>
-<meta name="description" content="PlusOne Wedding is a wedding-chaos maze game. Collect every RSVP, dodge Aunty Inquiry, a gatecrasher, the budget blowout and the DJ, then run up the aisle to the mandap.">
+<title>PlusOne Wedding</title>
+<meta name="description" content="Wedding-chaos browser games. Pick one and play: run up the aisle, or serve the wedding feast.">
 <meta name="theme-color" content="#1a0e22">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plusonewedding.site/">
-<meta property="og:title" content="PlusOne Wedding · the wedding-chaos maze game">
-<meta property="og:description" content="Collect every RSVP, dodge the chaos, run up the aisle. Beat my score.">
+<meta property="og:title" content="PlusOne Wedding">
+<meta property="og:description" content="Wedding-chaos browser games. Pick one and play.">
 <meta property="og:image" content="https://plusonewedding.site/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://plusonewedding.site/og.png">
@@ -17,141 +17,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/home.css">
 </head>
 <body>
-<div class="app">
-  <header class="topbar">
+<div class="home-app">
+  <header class="masthead">
     <h1>PlusOne Wedding</h1>
-    <div class="tools">
-      <a class="tool" href="/game_2_dinning/"><span class="long">Wedding Feast</span><span class="short">Feast</span></a>
-      <button class="tool" id="how" type="button"><span class="long">How to play</span><span class="short">Rules</span></button>
-      <button class="tool" id="lb" type="button"><span class="long">Leaderboard</span><span class="short">Scores</span></button>
-      <button class="tool" id="restart" type="button" aria-label="Restart"><span class="long">Restart</span><span class="short" aria-hidden="true">↺</span></button>
-      <button class="tool" id="mute" type="button" aria-pressed="false" aria-label="Sound"><span class="long" id="mute-long">Sound on</span><span class="short" id="mute-short" aria-hidden="true">♪</span></button>
-    </div>
+    <p>Pick a game.</p>
   </header>
 
-  <div class="hud" aria-live="polite">
-    <div class="hud-cell"><span class="lbl">Score</span><b id="score">0</b></div>
-    <div class="hud-cell"><span class="lbl">RSVPs</span><b id="rsvps">0</b></div>
-    <div class="hud-cell"><span class="lbl">Days left</span><b id="days" class="days">3</b></div>
-    <div class="hud-cell"><span class="lbl" id="level-lbl">Level 1</span><b id="level">Mehendi</b></div>
-  </div>
-
-  <main class="board">
-    <div class="stage" id="stage">
-      <canvas id="screen" width="336" height="336" aria-label="Game board"></canvas>
-      <div class="toast" id="toast" role="status"></div>
-      <div class="bubble" id="bubble"></div>
-      <div class="flag" id="flag"></div>
-
-      <div class="overlay" id="ov-ready">
-        <div class="ready"><span id="ready-lvl"></span><b id="ready-txt">Ready?</b></div>
-      </div>
-
-      <div class="overlay" id="ov-pause">
-        <div class="card">
-          <h2>Paused</h2>
-          <p class="lede">The guests will wait. Probably.</p>
-          <button class="btn primary" id="resume">Resume</button>
-        </div>
-      </div>
-
-      <div class="overlay" id="ov-clear">
-        <div class="card">
-          <p class="eyebrow" id="clear-eyebrow">Level 1 cleared</p>
-          <h2 id="clear-title">Mehendi, <span class="hi">done.</span></h2>
-          <p class="soon-card" id="clear-soon" hidden>That's every level for now. New levels coming soon.</p>
-          <dl class="bonus" id="clear-bonus"></dl>
-          <div id="final-save" hidden>
-          <form class="save" data-save id="save-final">
-            <label for="save-final-name">Put your name on the leaderboard</label>
-            <div class="field">
-              <input id="save-final-name" name="name" maxlength="16" autocomplete="nickname" placeholder="Your name" required>
-              <button class="btn primary" type="submit">Save</button>
-            </div>
-            <p class="msg" aria-live="polite"></p>
-          </form>
-          <div class="saved" id="save-final-done" hidden><p></p><button class="btn" type="button" data-open-lb>See the leaderboard</button></div>
-          </div>
-          <button class="btn primary" id="next">Next</button>
-        </div>
-      </div>
-
-      <div class="overlay" id="ov-over">
-        <div class="card">
-          <p class="eyebrow">Game over</p>
-          <h2>Wedding postponed. <span class="hi">Again.</span></h2>
-          <p class="score-line">Score <b id="over-score">0</b> <span class="dot">·</span> Best <b id="over-best">0</b></p>
-          <form class="save" data-save id="save-over">
-            <label for="save-over-name">Put your name on the leaderboard</label>
-            <div class="field">
-              <input id="save-over-name" name="name" maxlength="16" autocomplete="nickname" placeholder="Your name" required>
-              <button class="btn primary" type="submit">Save</button>
-            </div>
-            <p class="msg" aria-live="polite"></p>
-          </form>
-          <div class="saved" id="save-over-done" hidden><p></p><button class="btn" type="button" data-open-lb>See the leaderboard</button></div>
-          <div class="row">
-            <button class="btn primary" id="again">Play again</button>
-            <button class="btn" id="share">Beat my score</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- One card per game. To add a game: put it in public/games/<slug>/ with its own
+       index.html and a 336x336 thumb.png, then add a card here. -->
+  <main class="games">
+    <a class="game" href="/games/aisle-run/" data-best="aisle-best" style="--frame: #4a2a5e">
+      <img class="shot" src="/games/aisle-run/thumb.png" width="336" height="336" alt="">
+      <span class="info">
+        <b class="name">Aisle Run</b>
+        <span class="hook">Collect every RSVP, dodge the relatives, then run up the aisle.</span>
+        <span class="foot"><span class="play">Play</span><span class="best" hidden></span></span>
+      </span>
+    </a>
+    <a class="game" href="/games/wedding-feast/" data-best="feast-best" style="--frame: #7a4a10">
+      <img class="shot" src="/games/wedding-feast/thumb.png" width="336" height="336" alt="">
+      <span class="info">
+        <b class="name">Wedding Feast</b>
+        <span class="hook">Serve every guest the right dish before they turn hangry.</span>
+        <span class="foot"><span class="play">Play</span><span class="best" hidden></span></span>
+      </span>
+    </a>
   </main>
-
-  <div class="pad" id="pad" aria-label="Direction pad">
-    <button data-dir="0" aria-label="Up">▲</button>
-    <button data-dir="3" aria-label="Left">◀</button>
-    <button data-dir="1" aria-label="Right">▶</button>
-    <button data-dir="2" aria-label="Down">▼</button>
-  </div>
 </div>
-
-
-<div class="rules show" id="rules" role="dialog" aria-modal="true" aria-labelledby="rules-title">
-  <div class="rules-card">
-    <h2 id="rules-title">PlusOne Wedding</h2>
-    <p class="what">A pixel maze game about the week before an Indian wedding. You're the couple-to-be: collect every RSVP, then run up the aisle to the mandap before the chaos catches you.</p>
-
-    <h3>How to play</h3>
-    <ol class="steps">
-      <li><canvas data-sprite="env" width="10" height="7"></canvas><span><b>Collect every RSVP</b> in the hall.</span></li>
-      <li><canvas data-sprite="cousin0" width="12" height="15"></canvas><span><b>Dodge the chaos.</b> Get caught and you lose a day. You have three.</span></li>
-      <li><canvas data-sprite="plus1" width="12" height="12"></canvas><span><b>Grab the power-ups</b> as they appear. They're listed below.</span></li>
-      <li><canvas data-sprite="couple0" width="14" height="13"></canvas><span><b>Run up the aisle.</b> With every RSVP in, the mandap opens. Reach it to clear the level.</span></li>
-    </ol>
-
-    <h3>Power-ups</h3>
-    <ul class="cast">
-      <li><canvas data-sprite="plus1" width="12" height="12"></canvas><span><b>The +1</b> isn't a life. For a few seconds the chaos panics, and touching them seats them for points.</span></li>
-      <li><canvas data-sprite="day" width="10" height="11"></canvas><span><b>Extra day</b> shows up once a level if you've lost a day. Grab it to win that day back.</span></li>
-    </ul>
-
-    <h3>The chaos</h3>
-    <ul class="cast">
-      <li><canvas data-sprite="aunty0" width="12" height="14"></canvas><span><b>Aunty Inquiry</b> stops you for a chat. Mash the arrows to escape.</span></li>
-      <li><canvas data-sprite="cousin0" width="12" height="15"></canvas><span><b>Gatecrasher</b> walks in uninvited, and keeps multiplying.</span></li>
-      <li><canvas data-sprite="invoice0" width="12" height="14"></canvas><span><b>Budget Blowout</b> floats over tables, faster every level.</span></li>
-      <li><canvas data-sprite="dj0" width="12" height="14"></canvas><span><b>The DJ</b> plays requests you didn't make. One hit flips your controls.</span></li>
-    </ul>
-
-    <p class="controls"><span class="kbd-only">Arrow keys or WASD to move, P to pause, R to restart.</span><span class="touch-only">Swipe on the hall or use the pad to move.</span> Five levels so far. New levels coming soon.</p>
-    <p class="beat" id="beat" hidden></p>
-    <button class="btn primary big" id="play" type="button">Play</button>
-  </div>
-</div>
-<div class="rules" id="lbm" role="dialog" aria-modal="true" aria-labelledby="lbm-title">
-  <div class="rules-card board-card">
-    <h2 id="lbm-title">Leaderboard</h2>
-    <p class="what">The best weddings so far. Finish a game to add your name.</p>
-    <ol class="lb-list" id="lb-list"></ol>
-    <p class="lb-status" id="lb-status"></p>
-    <button class="btn primary big" id="lb-close" type="button">Back to the game</button>
-  </div>
-</div>
-<script src="/game.js"></script>
+<script>
+// Show this browser's best score on each card. Each game keeps its own best in localStorage.
+document.querySelectorAll('.game[data-best]').forEach(card => {
+  let best = 0;
+  try { best = parseInt(localStorage.getItem(card.dataset.best), 10) || 0; } catch (e) {}
+  if (best > 0) {
+    const el = card.querySelector('.best');
+    el.textContent = 'Your best ' + best.toLocaleString('en-IN');
+    el.hidden = false;
+  }
+});
+</script>
 </body>
 </html>

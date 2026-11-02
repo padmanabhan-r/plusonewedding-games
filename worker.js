@@ -106,6 +106,11 @@ export default {
       url.hostname = 'plusonewedding.site';
       return Response.redirect(url.toString(), 301);
     }
+    // Share links from before the game picker pointed at /?beat=N. They belong to Aisle Run now.
+    if (url.pathname === '/' && url.searchParams.has('beat')) {
+      url.pathname = '/games/aisle-run/';
+      return Response.redirect(url.toString(), 301);
+    }
     if (url.pathname.startsWith('/api/')) {
       try {
         if (url.pathname === '/api/run' && request.method === 'POST') return await newRun(env);
