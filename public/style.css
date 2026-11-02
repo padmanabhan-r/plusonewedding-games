@@ -100,27 +100,6 @@ button { font: inherit; color: inherit; }
 .touch-only { display: none; }
 @media (pointer: coarse) { .pad { display: block; } .touch-only { display: inline; } .kbd-only { display: none; } .board { align-items: flex-start; } }
 
-/* Halloween promo: a slim banner under the board, or a card in the right margin on wide screens. */
-.ad { flex: none; position: relative; display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 6px 30px 6px 6px; border-radius: 10px; background: linear-gradient(135deg, #2b1530, #3a1a1a); border: 1px solid #ff7a1a; box-shadow: 0 0 18px rgba(255, 122, 26, .18); }
-.ad[hidden] { display: none; }
-.ad img { flex: none; width: 52px; height: 52px; border-radius: 8px; object-fit: cover; display: block; }
-.ad-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
-.ad-text b { font: 700 17px/1.1 var(--pixel); color: #ff9a3c; }
-.ad-text span { font-size: 13px; color: var(--soft); }
-.ad-tag { align-self: flex-start; margin-bottom: 2px; padding: 1px 6px; border-radius: 4px; background: #ff7a1a; color: #1a0e22 !important; font: 600 10px/1.4 var(--sans) !important; letter-spacing: .06em; text-transform: uppercase; }
-.ad-x { position: absolute; top: 4px; right: 6px; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer; }
-.ad-x:hover { background: rgba(255, 255, 255, .08); color: var(--text); }
-@media (min-width: 1120px) {
-  .ad { position: fixed; top: 16px; right: 16px; width: 200px; margin: 0; flex-direction: column; align-items: stretch; gap: 8px; padding: 8px 8px 12px; animation: bob 3.2s ease-in-out infinite; z-index: 5; }
-  .ad img { width: 100%; height: auto; aspect-ratio: 1; }
-  .ad-text { align-items: center; text-align: center; }
-  .ad-tag { align-self: center; }
-  .ad-text b { font-size: 21px; margin: 2px 0; }
-  .ad-x { top: 12px; right: 12px; background: rgba(20, 10, 26, .7); color: var(--text); }
-}
-@keyframes bob { 50% { transform: translateY(-5px) rotate(-1deg); } }
-@media (prefers-reduced-motion: reduce) { .ad { animation: none; } }
-
 /* Save-your-score form on the game-over and final screens. */
 .save { margin: 0 auto 12px; max-width: 320px; text-align: left; }
 .save label { display: block; margin-bottom: 5px; text-align: center; font-weight: 600; font-size: 14px; }
