@@ -635,7 +635,7 @@ const GLYPH = {
   'A':'010101111101101','B':'110101110101110','C':'011100100100011','D':'110101101101110',
   'E':'111100111100111','F':'111100111100100','G':'011100101101011','H':'101101111101101',
   'I':'111010010010111','J':'001001001101010','K':'101101110101101','L':'100100100100111',
-  'M':'101111101101101','N':'101111101101101','O':'010101101101010','P':'110101110100100',
+  'M':'101111101101101','N':'110101101101101','O':'010101101101010','P':'110101110100100',
   'R':'110101110101101','S':'011100010001110','T':'111010010010010','U':'101101101101111',
   'V':'101101101101010','W':'101101101111101','Y':'101101010010010','Z':'111001010100111',
 };
@@ -1362,17 +1362,20 @@ function triggerGameOver(){
 const KEYS={};
 const KMAP={ArrowUp:'u',w:'u',ArrowDown:'d',s:'d',ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r'};
 const DMAP={u:0,r:1,d:2,l:3};
+function pauseGame(){if(G.state==='play'){G.state='paused';Sound.stopBgm();showOverlay('ov-pause');}}
+function resumeGame(){if(G.state==='paused'){G.state='play';Sound.startBgm();showOverlay(null);}}
 window.addEventListener('keydown',e=>{
-  const n=KMAP[e.key]; if(!n)return;
-  if(!KEYS[n]){KEYS[n]=true;if(G.state==='play'){const dir=DMAP[n];G.player.want=dir;if(G.player.t===0)tryStep(G.player,dir);}}
-  if(e.key==='p'||e.key==='P'||e.key==='Escape'){
-    if(G.state==='play'){G.state='paused';Sound.stopBgm();showOverlay('ov-pause');}
-    else if(G.state==='paused'){G.state='play';Sound.startBgm();showOverlay(null);}
+  if(e.target instanceof HTMLInputElement||e.metaKey||e.ctrlKey||e.altKey)return;
+  const n=KMAP[e.key];
+  if(n){
+    if(!KEYS[n]){KEYS[n]=true;if(G.state==='play'){const dir=DMAP[n];G.player.want=dir;if(G.player.t===0)tryStep(G.player,dir);}}
+    e.preventDefault(); return;
   }
-  if((e.key==='r'||e.key==='R')&&G.state!=='ready')newGame();
-  if(e.key==='m'||e.key==='M')toggleMute();
-  e.preventDefault();
+  if(e.key==='p'||e.key==='P'||e.key==='Escape'){ if(G.state==='play')pauseGame(); else resumeGame(); e.preventDefault(); }
+  else if((e.key==='r'||e.key==='R')&&G.state!=='ready'){ newGame(); e.preventDefault(); }
+  else if(e.key==='m'||e.key==='M'){ toggleMute(); e.preventDefault(); }
 });
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame();});
 window.addEventListener('keyup',e=>{const n=KMAP[e.key];if(n)KEYS[n]=false;});
 
 let touchStart=null;
@@ -1392,12 +1395,12 @@ document.querySelectorAll('#pad button').forEach(btn=>{
   btn.addEventListener('pointerup',()=>btn.classList.remove('on'));
   btn.addEventListener('pointercancel',()=>btn.classList.remove('on'));
 });
-$('how').addEventListener('click',()=>$('rules').classList.add('show'));
+$('how').addEventListener('click',()=>{pauseGame();$('rules').classList.add('show');});
 $('play').addEventListener('click',()=>{$('rules').classList.remove('show');Sound.init();if(G.state==='title')newGame();});
 $('restart').addEventListener('click',()=>{Sound.init();newGame();});
-$('resume').addEventListener('click',()=>{if(G.state==='paused'){G.state='play';Sound.startBgm();showOverlay(null);}});
+$('resume').addEventListener('click',resumeGame);
 $('again').addEventListener('click',()=>{Sound.init();newGame();});
-$('lb').addEventListener('click',openLb);
+$('lb').addEventListener('click',()=>{pauseGame();openLb();});
 $('lb-close').addEventListener('click',()=>$('lbm').classList.remove('show'));
 $('share').addEventListener('click',()=>{
   const url=location.origin+location.pathname+'?beat='+G.score;
@@ -1418,6 +1421,7 @@ if(beatScore){const el=$('beat');if(el){el.hidden=false;el.textContent=`A friend
 
 // ---------- Leaderboard ----------
 async function fetchRun(){try{const r=await fetch('/api/feast/run',{method:'POST'});const d=await r.json();G.runId=d.id;}catch(e){}}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function openLb(){
   $('lbm').classList.add('show');
   const list=$('lb-list'),status=$('lb-status');
@@ -1427,7 +1431,7 @@ async function openLb(){
     list.innerHTML=d.top.map((row,i)=>`
       <li class="${G.lastSaveId===row.id?'me':''}">
         <span class="rk">#${i+1}</span>
-        <span class="nm">${row.name}<small>${['Breakfast','Lunch','Dinner'][row.level-1]||''}</small></span>
+        <span class="nm">${esc(row.name)}<small>${['Breakfast','Lunch','Dinner'][row.level-1]||''}</small></span>
         <span class="sc">${row.score.toLocaleString('en-IN')}</span>
       </li>`).join('');
     status.textContent=d.top.length?'':'No scores yet — be the first!';
