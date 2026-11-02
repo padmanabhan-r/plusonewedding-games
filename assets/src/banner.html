@@ -5,7 +5,7 @@
   html, body { margin: 0; width: 2000px; height: 800px; overflow: hidden; background: #1a0e22; }
   body { position: relative; font-family: Outfit, sans-serif; color: #fff1f5; }
   .glow { position: absolute; inset: 0; background: radial-gradient(900px 500px at 78% 50%, rgba(255, 79, 139, .18), transparent 70%), radial-gradient(700px 420px at 12% 90%, rgba(94, 230, 193, .10), transparent 70%); }
-  .left { position: absolute; left: 120px; top: 0; bottom: 0; width: 860px; display: flex; flex-direction: column; justify-content: center; }
+  .left { position: absolute; left: 110px; top: 0; bottom: 0; width: 780px; display: flex; flex-direction: column; justify-content: center; }
   .wm { font: 700 92px/1 "Pixelify Sans"; color: #ff4f8b; text-shadow: 6px 6px 0 #5a1838; margin: 0 0 34px; }
   h1 { margin: 0 0 22px; font: 600 64px/1.08 Outfit; letter-spacing: -.01em; }
   h1 span { color: #5ee6c1; }
@@ -13,18 +13,24 @@
   .chips { display: flex; gap: 14px; }
   .chip { padding: 10px 22px; border-radius: 10px; font: 600 24px/1.2 Outfit; border: 2px solid #4a2a5e; background: #24132f; }
   .chip.rose { background: #ff4f8b; border-color: #ff4f8b; color: #1a0e22; box-shadow: 0 5px 0 #a82a5c; }
-  .card { position: absolute; right: 160px; top: 76px; width: 620px; height: 620px; transform: rotate(3deg); border-radius: 16px; overflow: hidden; border: 4px solid #4a2a5e; box-shadow: 22px 22px 0 #ff4f8b; background: #140a1a; }
-  .card img { width: 100%; height: 100%; display: block; }
-  .tag { position: absolute; right: 130px; bottom: 70px; transform: rotate(-4deg); padding: 10px 18px; border-radius: 10px; background: #5ee6c1; color: #1a0e22; font: 700 28px/1 "Pixelify Sans"; box-shadow: 6px 6px 0 #123d36; }
+  .card { position: absolute; width: 500px; height: 500px; border-radius: 16px; overflow: hidden; background: #140a1a; }
+  .card img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+  .card.aisle { right: 110px; top: 50px; transform: rotate(4deg); border: 4px solid #4a2a5e; box-shadow: 20px 20px 0 #ff4f8b; }
+  .card.feast { right: 520px; top: 196px; width: 470px; height: 470px; transform: rotate(-5deg); border: 4px solid #7a4a10; box-shadow: 20px 20px 0 #5ee6c1; }
+  .tag { position: absolute; padding: 10px 18px; border-radius: 10px; font: 700 28px/1 "Pixelify Sans"; }
+  .tag.aisle { right: 80px; top: 590px; transform: rotate(-3deg); background: #ff4f8b; color: #1a0e22; box-shadow: 6px 6px 0 #5a1838; }
+  .tag.feast { right: 735px; top: 160px; transform: rotate(-6deg); background: #5ee6c1; color: #1a0e22; box-shadow: 6px 6px 0 #123d36; }
 </style></head>
 <body>
   <div class="glow"></div>
   <div class="left">
     <div class="wm">PlusOne Wedding</div>
-    <h1>Collect every RSVP.<br><span>Run up the aisle.</span></h1>
-    <p>A pixel maze game about the week before an Indian wedding, with a nosy aunty, gatecrashers, a runaway budget and a DJ.</p>
-    <div class="chips"><span class="chip rose">Play in the browser</span><span class="chip">5 levels</span><span class="chip">Leaderboard</span></div>
+    <h1>Wedding chaos,<br><span>one game at a time.</span></h1>
+    <p>Pixel games about an Indian wedding. Collect every RSVP, or serve the feast before the guests turn hangry.</p>
+    <div class="chips"><span class="chip rose">Play in the browser</span><span class="chip">2 games</span><span class="chip">Leaderboards</span></div>
   </div>
-  <div class="card"><img src="../screens/power.jpg" alt=""></div>
-  <div class="tag">+1 = power-up</div>
+  <div class="card aisle"><img src="../../public/games/aisle-run/thumb.png" alt=""></div>
+  <div class="card feast"><img src="../../public/games/wedding-feast/thumb.png" alt=""></div>
+  <div class="tag feast">Wedding Feast</div>
+  <div class="tag aisle">Aisle Run</div>
 </body></html>
