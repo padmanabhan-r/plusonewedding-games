@@ -1,0 +1,97 @@
+# Enforces the rules in AGENTS.md that GitHub settings can't enforce on this plan.
+# pull_request_target runs this file as it is on main, so a pull request can't edit the check it's judged by.
+# It never checks out pull request code; it only reads the list of changed files from the API.
+name: repo-guard
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+env:
+  OWNER: padmanabhan-r
+
+jobs:
+  pull-request:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check which files this pull request touches
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          if [ "$AUTHOR" = "$OWNER" ]; then echo "Opened by the owner, $OWNER. Nothing to check."; exit 0; fi
+          gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[] | [.status, .filename, (.previous_filename // "")] | @tsv' > files.tsv
+          owner_only() {
+            case "$1" in
+              AGENTS.md|CLAUDE.md|CLAUDE.local.md|CONTRIBUTING.md|GEMINI.md|wrangler.toml|.cursorrules|.windsurfrules) return 0 ;;
+              .claude/*|.github/*|.cursor/*|*/AGENTS.md|*/CLAUDE.md|*/CLAUDE.local.md|*/GEMINI.md) return 0 ;;
+            esac
+            return 1
+          }
+          fail=0
+          while IFS=$'\t' read -r status file previous; do
+            for f in "$file" $previous; do
+              if owner_only "$f"; then
+                echo "::error file=$f::$f is owner-only (agent rules, repo settings or production config). Take it out of this pull request and open an issue instead."
+                fail=1
+              fi
+            done
+            owner_only "$file" && continue
+            case "$file" in
+              public/games/*/*|assets/*) ;;
+              public/index.html|worker.js|schema.sql|README.md)
+                if [ "$status" = "removed" ]; then echo "::error file=$file::Don't delete $file."; fail=1; fi ;;
+              *)
+                if [ "$status" = "added" ] || [ "$status" = "renamed" ] || [ "$status" = "copied" ]; then
+                  echo "::error file=$file::New files go in your game's folder, public/games/<slug>/."
+                  fail=1
+                else
+                  echo "::warning file=$file::$file is shared. Changes here need the owner's OK in review."
+                fi ;;
+            esac
+          done < files.tsv
+          games=$(cut -f2,3 files.tsv | tr '\t' '\n' | sed -n 's#^public/games/\([^/]*\)/.*#\1#p' | sort -u)
+          count=$(printf '%s\n' "$games" | grep -c . || true)
+          if [ "$count" -gt 1 ]; then
+            echo "::error::This pull request touches $count games ($(echo $games)). Keep it to one game per pull request."
+            fail=1
+          fi
+          if [ "$fail" = 0 ]; then echo "Only allowed files are touched."; fi
+          exit $fail
+
+  main-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Flag pushes to main that didn't come from a merged pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          PUSHER: ${{ github.actor }}
+          FORCED: ${{ github.event.forced }}
+          COMPARE: ${{ github.event.compare }}
+        run: |
+          merged=0
+          for try in 1 2 3; do
+            merged=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '[.[] | select(.merged_at != null)] | length')
+            [ "$merged" -gt 0 ] && break
+            sleep 15
+          done
+          if [ "$merged" -gt 0 ] && [ "$FORCED" != "true" ]; then echo "This push is a merged pull request."; exit 0; fi
+          what="a direct push"; [ "$FORCED" = "true" ] && what="a force-push"
+          gh issue create --repo "$REPO" --assignee "$OWNER" \
+            --title "main changed by $what from $PUSHER" \
+            --body "$(printf '%s pushed `%s` to `main` without a merged pull request (%s).\n\nCompare: %s\n\nEverything reaches main through a pull request (AGENTS.md, section 6). Review the change, then revert it or keep it.' "$PUSHER" "$SHA" "$what" "$COMPARE")"
+          echo "::error::main changed by $what from $PUSHER. An issue has been opened for $OWNER."
+          exit 1
