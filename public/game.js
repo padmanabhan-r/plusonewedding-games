@@ -1014,13 +1014,6 @@ document.querySelectorAll('canvas[data-sprite]').forEach(c => {
   const s = SPR[c.dataset.sprite].n; c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0);
 });
 
-// Halloween promo: shown until the end of 1 November, and closable.
-{
-  const ad = $('ad'), now = new Date();
-  if (now > new Date(now.getFullYear(), 10, 2)) ad.hidden = true;
-  $('ad-x').addEventListener('click', () => { ad.hidden = true; fitCanvas(); });
-}
-
 // ---------- Boot ----------
 drawBg();
 G.cousinCount = 1; G.rsvps = new Set(RSVP_SPOTS.map(([x, y]) => x + ',' + y)); G.total = G.rsvps.size; resetActors();
