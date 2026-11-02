@@ -1,10 +1,13 @@
 <div align="center">
 
-<img src="assets/banner.jpg" width="100%" alt="PlusOne Wedding banner: the pixel banquet hall with tables, RSVP envelopes and the mandap, beside the line Collect every RSVP. Run up the aisle.">
+<img src="assets/banner.jpg" width="100%" alt="PlusOne Wedding banner: the line Wedding chaos, one game at a time, beside the boards of Wedding Feast and Aisle Run on tilted cards">
 
 # PlusOne Wedding
 
 [![Play now](https://img.shields.io/badge/Play_now-plusonewedding.site-ff4f8b?style=for-the-badge&logo=googlechrome&logoColor=white)](https://plusonewedding.site)
+[![Aisle Run](https://img.shields.io/badge/Aisle_Run-play-5ee6c1?style=for-the-badge&labelColor=1a0e22)](https://plusonewedding.site/games/aisle-run/)
+[![Wedding Feast](https://img.shields.io/badge/Wedding_Feast-play-5ee6c1?style=for-the-badge&labelColor=1a0e22)](https://plusonewedding.site/games/wedding-feast/)
+[![Add a game](https://img.shields.io/badge/Add_a_game-CONTRIBUTING.md-c4a8c8?style=for-the-badge&labelColor=1a0e22)](CONTRIBUTING.md)
 
 ![Studio](https://img.shields.io/badge/studio-Devs_on_Crack-ff4f8b?style=flat-square&labelColor=1a0e22)
 ![Genre](https://img.shields.io/badge/genre-wedding--chaos_games-5ee6c1?style=flat-square&labelColor=1a0e22)
@@ -14,9 +17,9 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="200"><img src="assets/logos/html5.svg" width="56" height="56" alt="HTML5"><br><b>HTML Canvas</b><br><sub>The game. Pixel art drawn in code, at 336 × 336, scaled up crisp.</sub></td>
-    <td align="center" width="200"><img src="assets/logos/cloudflareworkers.svg" width="56" height="56" alt="Cloudflare Workers"><br><b>Cloudflare Workers</b><br><sub>The platform. Serves the site and the leaderboard API.</sub></td>
-    <td align="center" width="200"><img src="assets/logos/sqlite.svg" width="56" height="56" alt="SQLite"><br><b>Cloudflare D1</b><br><sub>The memory. Keeps every saved name and score.</sub></td>
+    <td align="center" width="200"><img src="assets/logos/html5.svg" width="56" height="56" alt="HTML5"><br><b>HTML Canvas</b><br><sub>The games. Pixel art drawn in code, at 336 × 336, scaled up crisp.</sub></td>
+    <td align="center" width="200"><img src="assets/logos/cloudflareworkers.svg" width="56" height="56" alt="Cloudflare Workers"><br><b>Cloudflare Workers</b><br><sub>The platform. Serves the site and every game's leaderboard API.</sub></td>
+    <td align="center" width="200"><img src="assets/logos/sqlite.svg" width="56" height="56" alt="SQLite"><br><b>Cloudflare D1</b><br><sub>The memory. Keeps every saved name and score, game by game.</sub></td>
   </tr>
 </table>
 
@@ -26,14 +29,24 @@
 
 </div>
 
-PlusOne Wedding is a set of pixel games about Indian weddings. The home page is a game picker; each game has its own page and its own leaderboard. They run in any browser, on a phone or a laptop, with nothing to install.
+PlusOne Wedding is a set of pixel games about Indian weddings. They run in any browser, on a phone or a laptop, with nothing to install. The site opens on the Devs on Crack splash, then a game picker. Each game has its own page, its own controls and its own leaderboard.
 
-- **Aisle Run** (`/games/aisle-run/`): a maze game about the week before the wedding. You play the couple-to-be, racing round a banquet hall to collect every guest's RSVP while the wedding chaos tries to stop you. Get every RSVP in, then run up the aisle to the mandap.
-- **Wedding Feast** (`/games/wedding-feast/`): you're the server at a South Indian wedding. Grab the right dish off the food belt and get it to the table before the guests turn hangry.
+- **Aisle Run**: the week before the wedding. You're the couple-to-be, collecting every guest's RSVP round a banquet hall while the wedding chaos tries to stop you, then running up the aisle to the mandap.
+- **Wedding Feast**: the wedding lunch. You're the server at a South Indian wedding, taking the right dish off the food belt to the right table before the guests turn hangry.
 
-Made by **Devs on Crack**. This repository is the home of the wedding-themed games on plusonewedding.site.
+Made by **Devs on Crack**. This repository is the home of the wedding games on plusonewedding.site, and more are on the way.
 
-## Aisle Run: how it plays
+## How it opens
+
+1. **The splash.** "Devs on Crack" in pixel type over a pixel loading bar. It holds until the fonts and game boards have loaded, then fades to the picker. It shows once per visit, and a click or key press skips it.
+2. **The picker.** One card per game: a real frame from the game's board, its name, one line on what you do, and your best score once you've played.
+3. **The game.** Every game opens on its rules card with a Start button, so nothing moves until you're ready. The **‹** button at the top left goes back to the picker.
+
+| The splash | The picker |
+|---|---|
+| ![The Devs on Crack splash with its pixel loading bar](assets/screens/splash.jpg) | ![The game picker with cards for Aisle Run and Wedding Feast](assets/screens/picker.jpg) |
+
+## Aisle Run
 
 1. **Read the rules.** A pop-up explains the game, the four steps, the power-ups and the chaos before the first game. The **How to play** button brings it back at any time.
 2. **Collect every RSVP.** There are 49 envelopes around the hall. You start with **three days** until the wedding, and the days carry across all five levels.
@@ -43,11 +56,9 @@ Made by **Devs on Crack**. This repository is the home of the wedding-themed gam
 
 | The rules, before the first game | The board, mid-level |
 |---|---|
-| ![Rules pop-up](assets/screens/rules.jpg) | ![The banquet hall mid-level](assets/screens/play.jpg) |
+| ![Aisle Run's rules pop-up](assets/screens/rules.jpg) | ![The banquet hall mid-level](assets/screens/play.jpg) |
 
 <p align="center"><img src="assets/screens/power.jpg" width="640" alt="The +1 power-up in play: the chaos turns pastel and runs from the couple"></p>
-
-### The chaos
 
 | Character | What it does |
 |---|---|
@@ -58,43 +69,69 @@ Made by **Devs on Crack**. This repository is the home of the wedding-themed gam
 
 Seated by the +1, Aunty goes to Table 14, far from the mic. The gatecrasher gets a polite name card, the invoice gets negotiated down, and the DJ finally plays your song. Snacks float across the hall for extra points: a laddoo, a mehendi cone, and a slice of cake the caterer swore was gluten-free.
 
-### Levels
+**Levels:** Mehendi, Sangeet, Haldi, Wedding day, Reception. Every level uses the same hall and gets harder: more gatecrashers, a faster budget, a quicker aunty and DJ, and a shorter +1.
 
-Mehendi, Sangeet, Haldi, Wedding day, Reception. Every level uses the same hall and gets harder: more gatecrashers, a faster budget, a quicker aunty and DJ, and a shorter +1. Clearing Reception says "New levels coming soon."
+## Wedding Feast
 
-### Leaderboard
+1. **Watch the tables.** A dish floats above every table with an order, and the bar under it is the time left.
+2. **Go to the food belt.** Dishes ride along the belt at the top of the hall. Step under the one a table wants and you pick it up.
+3. **Rush it over.** Get close to the table and the dish is served. A fast delivery scores 250, a slower one 175, a late-but-made-it one 100.
+4. **Don't be late.** An order that runs out starts a fight between relatives, and the wedding's happiness drops. At zero, the feast is over.
+5. **Watch your step.** A monkey crashes the hall and slows you down if it catches you, and stepping in a sambar puddle with a dish in hand makes you drop it.
 
-At game over, or after clearing all five levels, players put their name on the public leaderboard. The top 20 show from the **Leaderboard** button.
-
-| The leaderboard | On a phone |
+| The rules, before the first round | Breakfast, with two orders up |
 |---|---|
-| ![Leaderboard](assets/screens/leaderboard.jpg) | <img src="assets/screens/phone-play.jpg" width="320" alt="The game on a phone, with the direction pad"> |
+| ![Wedding Feast's rules pop-up](assets/screens/feast-rules.jpg) | ![Wedding Feast mid-round: the food belt along the top, tables with guests, and orders for Pongal and Coffee](assets/screens/feast-play.jpg) |
 
-## Wedding Feast: how it plays
+| Round | Tables | Dishes | Pace |
+|---|---|---|---|
+| **Breakfast** | 12 | Idli, Dosa, Pongal, Poori, Vada, Coffee | Generous time, a slow belt |
+| **Lunch** | 16 | Rice, Sambar, Rasam, Kootu, Payasam, Appam | Medium |
+| **Dinner** | 20 | Biryani, Parotta, Cake, Pasta, Ice cream, Halwa | Fast orders, a fast belt |
 
-Orders float above the tables, each with a timer. Walk to the food belt along the top of the hall, step under the dish a table wants to pick it up, and carry it over before the timer runs out. A late order starts a fight between relatives and the wedding's happiness drops; at zero, the feast is over. Three rounds, each with more tables, faster orders and a faster belt: **Breakfast** (12 tables), **Lunch** (16) and **Dinner** (20). Scores go on their own leaderboard.
+Clearing a round banks a bonus of 5 points for every percent of happiness left.
+
+## Leaderboards
+
+Each game has its own public leaderboard. At game over, or after the last level or round, players put their name on it. The top 20 show from the **Leaderboard** button.
+
+<p align="center"><img src="assets/screens/leaderboard.jpg" width="760" alt="Aisle Run's leaderboard"></p>
+
+On a phone, the picker becomes a list and every game gets a direction pad:
+
+<p align="center"><img src="assets/screens/phone-picker.jpg" width="300" alt="The game picker on a phone">&nbsp;&nbsp;&nbsp;<img src="assets/screens/phone-play.jpg" width="300" alt="Aisle Run on a phone, with the direction pad"></p>
+
+## Checked
+
+| What | Result | How |
+|---|---|---|
+| One screen, no scroll | Fits at 1280 × 800, 1440 × 900, 390 × 750 and 360 × 740, on the picker and both games | Headless Chrome with CDP device emulation, `scrollHeight` against `clientHeight` and `scrollWidth` against `clientWidth`, 2 November 2026 |
+| Top bars on phones | No button runs past the 16 px gutter at 390 or 360 wide | Same run |
+| Wedding Feast name entry | Typing "Sandra wade" into the name box keeps every letter; P pauses and Esc resumes | Real key events through CDP |
+| Live site | `/`, both games and both leaderboard APIs return 200; old `/?beat=` links redirect to Aisle Run | `curl` against plusonewedding.site |
 
 ## The tech, part by part
 
 | Part | Built with | What it does |
 |---|---|---|
-| Game engine | Plain JavaScript and HTML Canvas, `public/games/<game>/game.js` | A 21 × 21 tile hall drawn at 336 × 336 and scaled up pixel-sharp. Grid movement with turn buffering, breadth-first pathfinding for the chasers, and a frame loop with a capped time step. |
-| Pixel art | String-map sprites in each game's `game.js` | Every character, table and pickup is drawn from code; the pastel "panic" versions are recoloured at load. |
-| Sound | Web Audio API | A shehnai-style tune, dhol beats and every sound effect are synthesised in the browser. No audio files. |
-| Game picker | `public/index.html`, `public/home.css` | The home page: one card per game, with a real frame from the game and this browser's best score. |
+| Splash and picker | `public/index.html`, `public/home.css` | The Devs on Crack loading screen, then one card per game with a frame from its board and the player's best score. |
+| Game engines | Plain JavaScript and HTML Canvas, `public/games/<game>/game.js` | Each game draws a 336 × 336 board and scales it up pixel-sharp. Aisle Run is a 21 × 21 tile hall with turn buffering and breadth-first pathfinding for the chasers; Wedding Feast is a tile hall with a moving food belt, timed orders and roaming hazards. Both run a frame loop with a capped time step. |
+| Pixel art | String-map sprites in each game's `game.js` | Every character, table, dish and pickup is drawn from code. |
+| Sound | Web Audio API | Tunes, beats and every sound effect are synthesised in the browser. No audio files. |
 | Page and layout | Each game's `index.html` and `style.css` | One screen with no scrolling: the board grows to fit, with a touch pad on phones. Pixelify Sans and Outfit from Google Fonts. |
-| Hosting | Cloudflare Workers with static assets, `worker.js`, `wrangler.toml` | Serves the site on `plusonewedding.site` and `www`, and redirects `www` to the apex. |
-| Leaderboard API | `worker.js` | Aisle Run: `POST /api/run` starts a run, `POST /api/score` saves one score per run, `GET /api/leaderboard` returns the top 20. Wedding Feast has the same three under `/api/feast/`. |
+| Hosting | Cloudflare Workers with static assets, `worker.js`, `wrangler.toml` | Serves `plusonewedding.site` and redirects `www` to the apex. Old `/?beat=N` share links redirect to Aisle Run. |
+| Leaderboard APIs | `worker.js` | Aisle Run: `POST /api/run` starts a run, `POST /api/score` saves one score per run, `GET /api/leaderboard` returns the top 20. Wedding Feast has the same three under `/api/feast/`. |
 | Leaderboard data | Cloudflare D1 `plusone-wedding-scores`, `schema.sql` | `runs` and `scores` for Aisle Run, `feast_runs` and `feast_scores` for Wedding Feast. |
-| Fair play | `worker.js` | Each run saves once, a score must be reachable in the time played, and names with common English and Hindi slurs are refused. |
+| Fair play | `worker.js` | Each run saves once, names with common English and Hindi slurs are refused, and a score must be reachable in the time played. Aisle Run allows up to 500 points a second; Wedding Feast up to 200 a second, a maximum of 40,000, and later rounds only after the time it takes to reach them. |
 
 ## Run it yourself
 
-You need a current Node LTS, and a Cloudflare account for the leaderboard.
+You need a current Node LTS, and a Cloudflare account for the leaderboards.
 
 ```bash
 gh repo clone padmanabhan-r/plusonewedding-games && cd plusonewedding-games
-npx wrangler dev          # site and leaderboard API on http://localhost:8787
+npx wrangler d1 execute plusone-wedding-scores --local --file schema.sql   # local database, once
+npx wrangler dev                                                           # site and leaderboard APIs on http://localhost:8787
 ```
 
 The games also run without the API (the leaderboards just won't load):
@@ -110,13 +147,6 @@ npx wrangler d1 execute plusone-wedding-scores --remote --file schema.sql
 npx wrangler deploy
 ```
 
-First-time database setup, already done for the live site:
-
-```bash
-npx wrangler d1 create plusone-wedding-scores
-npx wrangler d1 execute plusone-wedding-scores --remote --file schema.sql
-```
-
 There are no environment variables. The Worker's only bindings are `ASSETS` (the `public/` folder) and `DB` (the D1 database), both in `wrangler.toml`.
 
 ## Status and limits
@@ -125,34 +155,31 @@ Live at [plusonewedding.site](https://plusonewedding.site) with two games, sound
 
 - All five Aisle Run levels share one hall layout.
 - The fair-play checks stop casual cheating, not a determined script.
-- The leaderboard shows the top 20; ranks beyond that are only shown to the player who saved.
+- Each leaderboard shows the top 20; ranks beyond that are only shown to the player who saved.
 
 ## Next steps
 
-- **New levels:** new halls with their own layouts.
-- **More games:** more wedding-themed games, each in its own folder (see [Adding a game](#adding-a-game)).
-- **Weekly leaderboard:** a this-week board beside the all-time one.
+- **More games:** more wedding-themed games, each in its own folder. [CONTRIBUTING.md](CONTRIBUTING.md) has the steps.
+- **New Aisle Run levels:** new halls with their own layouts.
+- **Weekly leaderboards:** a this-week board beside the all-time one, for every game.
 
 ## Adding a game
 
-1. Make a folder `public/games/<slug>/` with the game's own `index.html`, `game.js` and `style.css`. Use absolute paths to its files (`/games/<slug>/game.js`), and a home button in the top bar linking to `/` (copy the `.brand` markup from an existing game).
-2. Add a 336 × 336 `thumb.png`: a frame from the game's canvas.
-3. Add a card for it in `public/index.html`.
-4. If it has a leaderboard, give it its own tables in `schema.sql` and its own routes under `/api/<slug>/` in `worker.js`.
-5. Check every page still fits one screen at 1280 × 800, 1440 × 900 and 390 × 750.
+Each game is self-contained in `public/games/<slug>/` and gets one card on the picker. [CONTRIBUTING.md](CONTRIBUTING.md) lists what every game needs: a Start button, the home button, one screen at the three sizes, and its own leaderboard routes and tables. It also covers how to open a pull request.
 
 ## Repository
 
 | Path | What it is |
 |---|---|
-| `public/index.html`, `public/home.css` | The game picker (home page) |
+| `public/index.html`, `public/home.css` | The Devs on Crack splash and the game picker (home page) |
 | `public/games/aisle-run/` | Aisle Run: `index.html`, `game.js` (map, sprites, movement, chasers, power-ups, sound, leaderboard client), `style.css`, `thumb.png` |
-| `public/games/wedding-feast/` | Wedding Feast: `index.html`, `game.js`, `style.css`, `thumb.png` |
+| `public/games/wedding-feast/` | Wedding Feast: `index.html`, `game.js` (hall, food belt, orders, hazards, sound, leaderboard client), `style.css`, `thumb.png` |
 | `public/og.png`, `public/favicon.svg` | Share card and icon, shared by every page |
-| `worker.js` | Cloudflare Worker: static files, `www` redirect, old `/?beat=` share links, both leaderboard APIs |
+| `worker.js` | Cloudflare Worker: static files, redirects, both leaderboard APIs |
 | `schema.sql` | D1 tables for both games' runs and scores |
 | `wrangler.toml` | Worker name, custom domains, assets and D1 bindings |
-| `assets/` | README banner (with its HTML source), screenshots and logos |
+| `CONTRIBUTING.md` | How to set up, where a game goes, what it needs, and how to open a pull request |
+| `assets/` | README banner (with its HTML source in `assets/src/`), screenshots and logos |
 
 Check every script parses before deploying:
 
