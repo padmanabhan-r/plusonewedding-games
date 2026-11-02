@@ -2,7 +2,7 @@
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
 
 const MAX_SCORE = 200_000;
-const FEAST_MAX_SCORE = 60_000;
+const FEAST_MAX_SCORE = 40_000;
 const DAY_MS = 86_400_000;
 // Names are public, so a short list of slurs and swearing (English and Hindi) is refused.
 const BLOCKED = ['fuck', 'shit', 'cunt', 'bitch', 'nigg', 'fag', 'rape', 'whore', 'slut', 'dick', 'pussy', 'porn', 'nazi', 'hitler',
@@ -81,7 +81,8 @@ async function feastSaveScore(request, env) {
   const row = await env.DB.prepare('SELECT started_at, used FROM feast_runs WHERE id = ?').bind(run).first();
   if (!row || row.used) return json({ error: 'run' }, 400);
   const secs = (Date.now() - row.started_at) / 1000;
-  if (secs < 10 || score > secs * 300 + 3000) return json({ error: 'score' }, 400);
+  if (secs < 10 || score > secs * 200 + 3000) return json({ error: 'score' }, 400);
+  if ((level >= 2 && secs < 85) || (level >= 3 && secs < 190)) return json({ error: 'score' }, 400);
 
   const claimed = await env.DB.prepare('UPDATE feast_runs SET used = 1 WHERE id = ? AND used = 0').bind(run).run();
   if (claimed.meta.changes !== 1) return json({ error: 'run' }, 400);
