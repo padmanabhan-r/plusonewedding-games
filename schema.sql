@@ -11,3 +11,17 @@ CREATE TABLE IF NOT EXISTS scores (
   created_at INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS scores_by_score ON scores (score DESC, created_at ASC);
+
+CREATE TABLE IF NOT EXISTS feast_runs (
+  id TEXT PRIMARY KEY,
+  started_at INTEGER NOT NULL,
+  used INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS feast_scores (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  score INTEGER NOT NULL,
+  level INTEGER NOT NULL,
+  created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS feast_scores_by_score ON feast_scores (score DESC, created_at ASC);

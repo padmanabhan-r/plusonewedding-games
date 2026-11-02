@@ -2,6 +2,7 @@
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
 
 const MAX_SCORE = 200_000;
+const FEAST_MAX_SCORE = 40_000;
 const DAY_MS = 86_400_000;
 // Names are public, so a short list of slurs and swearing (English and Hindi) is refused.
 const BLOCKED = ['fuck', 'shit', 'cunt', 'bitch', 'nigg', 'fag', 'rape', 'whore', 'slut', 'dick', 'pussy', 'porn', 'nazi', 'hitler',
@@ -55,6 +56,50 @@ async function leaderboard(env) {
   return json({ top: results });
 }
 
+// Wedding Feast (game 2) leaderboard
+async function feastNewRun(env) {
+  const id = crypto.randomUUID(), now = Date.now();
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM feast_runs WHERE started_at < ?').bind(now - DAY_MS),
+    env.DB.prepare('INSERT INTO feast_runs (id, started_at) VALUES (?, ?)').bind(id, now),
+  ]);
+  return json({ id });
+}
+
+async function feastSaveScore(request, env) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'bad-json' }, 400); }
+  const name = cleanName(body?.name);
+  if (name.length < 1 || [...name].length > 16) return json({ error: 'name' }, 400);
+  if (isBlocked(name)) return json({ error: 'name-blocked' }, 400);
+  const score = Math.floor(Number(body?.score));
+  const level = Math.floor(Number(body?.level));
+  if (!Number.isFinite(score) || score < 0 || score > FEAST_MAX_SCORE) return json({ error: 'score' }, 400);
+  if (!Number.isFinite(level) || level < 1 || level > 3) return json({ error: 'score' }, 400);
+
+  const run = String(body?.run ?? '');
+  const row = await env.DB.prepare('SELECT started_at, used FROM feast_runs WHERE id = ?').bind(run).first();
+  if (!row || row.used) return json({ error: 'run' }, 400);
+  const secs = (Date.now() - row.started_at) / 1000;
+  if (secs < 10 || score > secs * 200 + 3000) return json({ error: 'score' }, 400);
+  if ((level >= 2 && secs < 85) || (level >= 3 && secs < 190)) return json({ error: 'score' }, 400);
+
+  const claimed = await env.DB.prepare('UPDATE feast_runs SET used = 1 WHERE id = ? AND used = 0').bind(run).run();
+  if (claimed.meta.changes !== 1) return json({ error: 'run' }, 400);
+  const inserted = await env.DB.prepare('INSERT INTO feast_scores (name, score, level, created_at) VALUES (?, ?, ?, ?) RETURNING id')
+    .bind(name, score, level, Date.now()).first();
+  const [above, total] = await env.DB.batch([
+    env.DB.prepare('SELECT COUNT(*) AS n FROM feast_scores WHERE score > ?').bind(score),
+    env.DB.prepare('SELECT COUNT(*) AS n FROM feast_scores'),
+  ]);
+  return json({ ok: true, id: inserted.id, rank: above.results[0].n + 1, total: total.results[0].n });
+}
+
+async function feastLeaderboard(env) {
+  const { results } = await env.DB.prepare('SELECT id, name, score, level FROM feast_scores ORDER BY score DESC, created_at ASC LIMIT 20').all();
+  return json({ top: results });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -67,6 +112,9 @@ export default {
         if (url.pathname === '/api/run' && request.method === 'POST') return await newRun(env);
         if (url.pathname === '/api/score' && request.method === 'POST') return await saveScore(request, env);
         if (url.pathname === '/api/leaderboard' && request.method === 'GET') return await leaderboard(env);
+        if (url.pathname === '/api/feast/run' && request.method === 'POST') return await feastNewRun(env);
+        if (url.pathname === '/api/feast/score' && request.method === 'POST') return await feastSaveScore(request, env);
+        if (url.pathname === '/api/feast/leaderboard' && request.method === 'GET') return await feastLeaderboard(env);
         return json({ error: 'not-found' }, 404);
       } catch (err) {
         console.error(err);
