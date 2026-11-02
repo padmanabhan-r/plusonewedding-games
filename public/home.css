@@ -57,3 +57,20 @@ body { font: 400 15px/1.45 var(--sans); -webkit-font-smoothing: antialiased; ove
   .foot { margin-top: 6px; }
   .play { padding: 6px 16px; font-size: 14px; }
 }
+
+/* Studio splash. One loud moment: the studio name in pixel type over a pixel loading bar. */
+.splash { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; background: var(--bg); transition: opacity .45s ease; cursor: pointer; }
+.splash.done { opacity: 0; pointer-events: none; }
+.splash-inner { display: flex; flex-direction: column; align-items: center; padding: 0 16px; }
+.studio { margin: 0; font: 700 clamp(40px, 11vw, 104px)/1 var(--pixel); color: var(--mint); text-shadow: 4px 4px 0 #1f5a4c; white-space: nowrap; animation: studio-in .5s steps(5) both; }
+.presents { margin: 14px 0 26px; font-size: clamp(14px, 2vw, 17px); color: var(--muted); letter-spacing: .02em; animation: fade-in .4s .35s both; }
+.loadbar { width: min(260px, 70vw); height: 14px; padding: 2px; border: 2px solid var(--line); border-radius: 2px; }
+.loadbar span { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--rose) 0 14px, transparent 14px 18px); animation: load 1.7s steps(13, end) .1s forwards; }
+@keyframes load { to { width: 100%; } }
+@keyframes studio-in { from { opacity: 0; transform: translateY(8px); } }
+@keyframes fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .studio, .presents { animation: none; }
+  .loadbar span { animation-duration: .4s; }
+  .splash { transition: none; }
+}
