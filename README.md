@@ -120,7 +120,7 @@ Live at [plusonewedding.site](https://plusonewedding.site) with five levels, pow
 
 ## Next steps
 
-- **New levels:** new halls with their own layouts, starting with the Halloween games teased on the site.
+- **New levels:** new halls with their own layouts.
 - **More games:** more wedding-themed games on plusonewedding.site, each with its own page.
 - **Weekly leaderboard:** a this-week board beside the all-time one.
 
@@ -132,7 +132,6 @@ Live at [plusonewedding.site](https://plusonewedding.site) with five levels, pow
 | `public/game.js` | The whole game: map, sprites, movement, chasers, power-ups, sound, leaderboard client |
 | `public/style.css` | Layout and look |
 | `public/og.png`, `public/favicon.svg` | Share card and icon |
-| `public/halloween.jpg` | The Halloween promo card image |
 | `worker.js` | Cloudflare Worker: static files, `www` redirect, leaderboard API |
 | `schema.sql` | D1 tables for runs and scores |
 | `wrangler.toml` | Worker name, custom domains, assets and D1 bindings |

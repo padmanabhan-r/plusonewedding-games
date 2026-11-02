@@ -9,7 +9,6 @@ Wedding-themed browser games on **plusonewedding.site**, made by **Devs on Crack
 - **Look:** plum `#1a0e22`, rose `#ff4f8b`, mint `#5ee6c1`, with Pixelify Sans and Outfit. Never use the PlusOne Events look (ink and marigold, EB Garamond, the italic wordmark) or the old ivory and navy.
 - **One screen, no page scroll.** Check 1280×800, 1440×900 and a 390×750 phone. Measure `scrollHeight` against `clientHeight`; don't judge it by eye.
 - **No credit line** on the site.
-- The Halloween card shows Paddy's photo with his OK. It hides itself after 1 November.
 
 ## Deploy
 
@@ -31,4 +30,4 @@ npx wrangler d1 execute plusone-wedding-scores --remote --command "DELETE FROM s
 
 ## Git
 
-Commits are authored as "Devs on Crack". No AI attribution in commits, ever. `private/` is git-ignored and holds originals (such as the full-size Halloween photo).
+Commits are authored as "Devs on Crack". No AI attribution in commits, ever. `private/` is git-ignored and holds originals.
