@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "deny": [
+      "Edit(/AGENTS.md)",
+      "Edit(/CLAUDE.md)",
+      "Edit(/CLAUDE.local.md)",
+      "Edit(/CONTRIBUTING.md)",
+      "Edit(/GEMINI.md)",
+      "Edit(/wrangler.toml)",
+      "Edit(/.claude/**)",
+      "Edit(/.github/**)",
+      "Edit(/.cursor/**)",
+      "Edit(/.cursorrules)",
+      "Edit(/.windsurfrules)",
+      "Edit(**/AGENTS.md)",
+      "Edit(**/CLAUDE.md)"
+    ]
+  }
+}
