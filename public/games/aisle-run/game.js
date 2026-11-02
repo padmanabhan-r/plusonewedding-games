@@ -1,4 +1,4 @@
-// PlusOne Wedding: a wedding-chaos maze game.
+// Aisle Run: a wedding-chaos maze game on PlusOne Wedding.
 (() => {
 'use strict';
 
@@ -1000,10 +1000,10 @@ function toggleMute() { Sound.setMuted(!Sound.muted); syncMute(); }
 muteBtn.addEventListener('click', toggleMute); syncMute();
 
 $('share').addEventListener('click', async () => {
-  const url = `${location.origin}/?beat=${G.score}`;
-  const text = `I scored ${G.score.toLocaleString('en-IN')} in PlusOne Wedding. Beat my score:`;
+  const url = `${location.origin}${location.pathname}?beat=${G.score}`;
+  const text = `I scored ${G.score.toLocaleString('en-IN')} in Aisle Run. Beat my score:`;
   try {
-    if (navigator.share) { await navigator.share({ title: 'PlusOne Wedding', text, url }); return; }
+    if (navigator.share) { await navigator.share({ title: 'Aisle Run', text, url }); return; }
     await navigator.clipboard.writeText(`${text} ${url}`); toast('Link copied. Send it to someone.');
   } catch (e) { if (e && e.name !== 'AbortError') toast('Copy this: ' + url, 4); }
 });
